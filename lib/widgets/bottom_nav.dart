@@ -1,7 +1,7 @@
 import 'package:call_taxi_app/widgets/bookings.dart';
 
 import 'package:call_taxi_app/widgets/screen_home.dart';
-import 'package:call_taxi_app/screens/user/user.dart';
+import 'package:call_taxi_app/view/user/user.dart';
 
 import 'package:flutter/material.dart';
 

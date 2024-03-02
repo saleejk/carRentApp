@@ -1,15 +1,10 @@
-import 'package:call_taxi_app/screens/bookings/bookingscoming.dart';
+import 'package:call_taxi_app/view/bookings/bookingscoming.dart';
 
 import 'package:flutter/material.dart';
 
-class Bookings extends StatefulWidget {
+class Bookings extends StatelessWidget {
   const Bookings({super.key});
 
-  @override
-  State<Bookings> createState() => _BookingsState();
-}
-
-class _BookingsState extends State<Bookings> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -40,7 +35,7 @@ class _BookingsState extends State<Bookings> {
               ),
             ]),
           ),
-          body: const TabBarView(children: [
+          body: TabBarView(children: [
             BookingsComing(),
           ]),
         ));

@@ -1,5 +1,5 @@
-import 'package:call_taxi_app/screens/home/home_bike.dart';
-import 'package:call_taxi_app/screens/home/home_car.dart';
+import 'package:call_taxi_app/view/home/home_bike.dart';
+import 'package:call_taxi_app/view/home/home_car.dart';
 import 'package:flutter/material.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -51,7 +51,7 @@ class ScreenHome extends StatelessWidget {
               )
             ]),
           ),
-          body: const TabBarView(children: [HomeCar(), HomeBike()]),
+          body: TabBarView(children: [HomeCar(), HomeBike()]),
         ));
   }
 }
