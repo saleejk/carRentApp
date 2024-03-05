@@ -10,15 +10,11 @@ import 'package:call_taxi_app/view/user/user_pages/subscreen/termsAndConditions.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class User extends StatefulWidget {
-  const User({super.key});
+class User extends StatelessWidget {
+  User({super.key});
 
-  @override
-  State<User> createState() => _UserState();
-}
-
-class _UserState extends State<User> {
   File? iimage;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserPageProvider>(builder: (context, provider, child) {

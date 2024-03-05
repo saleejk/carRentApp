@@ -1,7 +1,7 @@
 import 'package:call_taxi_app/controller/ui_providers/car_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
 import 'package:call_taxi_app/models/cars_model/cars_model.dart';
-import 'package:call_taxi_app/view/add_userdata.dart';
+import 'package:call_taxi_app/view/add_booking.dart';
 import 'package:call_taxi_app/view/user/user_pages/chart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +12,6 @@ class HomeCar extends StatelessWidget {
   HomeCar({
     super.key,
   });
-
-  int activeIndex = 0;
 
   final cars = [
     'assets/car-26.png',
@@ -71,7 +69,7 @@ class HomeCar extends StatelessWidget {
                   autoPlayAnimationDuration: const Duration(seconds: 3),
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (index, reason) {
-                    searchProvider.activeIndex = index;
+                    // searchProvider.activeIndex = index;
                   }))),
       Padding(
           padding: const EdgeInsets.all(8.0),
@@ -79,7 +77,10 @@ class HomeCar extends StatelessWidget {
               width: double.infinity,
               height: 40,
               child: TextFormField(
-                onChanged: (value) => searchProvider.cSearch(value, context),
+                onChanged: (value) {
+                  searchProvider.carSearch = value;
+                  searchProvider.carSearchResult(context);
+                },
                 decoration: InputDecoration(
                     label: const Text('search'),
                     border: OutlineInputBorder(
@@ -87,25 +88,34 @@ class HomeCar extends StatelessWidget {
               ))),
       Expanded(child: Consumer2<SearchProvider, CarProvider>(
           builder: (BuildContext ctx, searchValue, carValue, child) {
-        final carlist = searchValue.cSearchedList.isNotEmpty
-            ? searchValue.cSearchedList
-            : carValue.carList;
-        return carListbuild(carlist, searchValue);
+        return SizedBox(
+            child: searchProvider.carSearch.isNotEmpty
+                ? carValue.carSearchList.isEmpty
+                    ? Center(
+                        child: Lottie.asset(
+                        'assets/Animation - 1707716192244.json',
+                      ))
+                    : carListbuild(carValue.carSearchList)
+                : carListbuild(carValue.carList));
+        // final carlist = searchValue.cSearchedList.isNotEmpty
+        //     ? searchValue.cSearchedList
+        //     : carValue.carList;
+        // return carListbuild(carlist, searchValue);
       }))
     ]));
   }
 
-  Widget carListbuild(List<CarsModel> newCarList, SearchProvider searchValue) {
-    return searchValue.isEmpty
+  Widget carListbuild(List<CarsModel> carList) {
+    return carList.isEmpty
         ? SizedBox(
             child: Center(
                 child: Lottie.asset(
             'assets/Animation - 1707716192244.json',
           )))
         : ListView.separated(
-            itemCount: newCarList.length,
+            itemCount: carList.length,
             itemBuilder: (ctx, index) {
-              final data = newCarList[index];
+              final data = carList[index];
               final rentt = int.parse(data.carRent);
               carSum.add(rentt);
               double totalCar =
@@ -208,15 +218,3 @@ class HomeCar extends StatelessWidget {
 
   List<int> carSum = [];
 }
-// return SizedBox(
-//                         child: Center(
-//                             child: Lottie.asset(
-//                       'assets/Animation - 1707716192244.json',
-//                     )));
-//                   if (carList.isEmpty) {
-                    
-//                   } else {
-//                     return carListbuild(searchProvider.searchedList);
-//                   }
-//                 } else {
-//                   return carListbuild(carList);

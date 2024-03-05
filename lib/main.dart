@@ -1,3 +1,5 @@
+import 'package:call_taxi_app/controller/bottom_provider.dart';
+import 'package:call_taxi_app/controller/edit_provider.dart';
 import 'package:call_taxi_app/controller/ui_providers/bike_provider.dart';
 import 'package:call_taxi_app/controller/vehicle_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
@@ -47,7 +49,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserPageProvider()),
         ChangeNotifierProvider(create: (context) => CarProvider()),
         ChangeNotifierProvider(create: (context) => BikeProvider()),
-        ChangeNotifierProvider(create: (context) => BookingProvider())
+        ChangeNotifierProvider(create: (context) => BookingProvider()),
+        ChangeNotifierProvider(
+          create: (context) => EditProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BottomProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

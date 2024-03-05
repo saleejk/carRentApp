@@ -16,4 +16,9 @@ class CarProvider extends ChangeNotifier {
     await carservice.addCar(value);
     getAllCar();
   }
+
+  void carFilteredSearch(List<CarsModel> value) {
+    carSearchList = value;
+    notifyListeners();
+  }
 }

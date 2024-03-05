@@ -1,5 +1,5 @@
 import 'package:call_taxi_app/controller/logIn_controller.dart';
-import 'package:call_taxi_app/widgets/bottom_nav.dart';
+import 'package:call_taxi_app/view/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

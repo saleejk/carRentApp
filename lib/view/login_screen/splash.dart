@@ -1,5 +1,5 @@
 import 'package:call_taxi_app/main.dart';
-import 'package:call_taxi_app/widgets/bottom_nav.dart';
+import 'package:call_taxi_app/view/widgets/bottom_nav.dart';
 import 'package:call_taxi_app/view/login_screen/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

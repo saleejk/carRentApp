@@ -3,7 +3,7 @@ import 'package:call_taxi_app/controller/vehicle_provider.dart';
 import 'package:call_taxi_app/controller/ui_providers/car_provider.dart';
 import 'package:call_taxi_app/models/bikes_model/bikes_model.dart';
 import 'package:call_taxi_app/models/cars_model/cars_model.dart';
-import 'package:call_taxi_app/widgets/bottom_nav.dart';
+import 'package:call_taxi_app/view/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -219,5 +219,6 @@ class AddCar extends StatelessWidget {
           image: vehicleProvider.iimage!.path);
       bikeProvider.addBike(bikeData);
     }
+    vehicleProvider.clearr();
   }
 }

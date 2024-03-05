@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'package:call_taxi_app/controller/ui_providers/bike_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
-import 'package:call_taxi_app/view/add_userdata.dart';
+import 'package:call_taxi_app/models/bikes_model/bikes_model.dart';
+import 'package:call_taxi_app/view/add_booking.dart';
 import 'package:call_taxi_app/view/user/user_pages/chart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class HomeBike extends StatelessWidget {
                   autoPlayAnimationDuration: const Duration(seconds: 3),
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (index, reason) {
-                    searchProvider.activeIndex = index;
+                    // provider.ofactiveIndex = index;
                   }))),
       Padding(
           padding: const EdgeInsets.all(8.0),
@@ -73,9 +74,11 @@ class HomeBike extends StatelessWidget {
               width: double.infinity,
               height: 40,
               child: TextFormField(
-                controller: searchProvider.bSearchController,
-                onChanged: (value) => searchProvider.bSearch(
-                    searchProvider.bSearchController.text, context),
+                // controller: searchProvider.bSearchController,
+                onChanged: (value) {
+                  searchProvider.bikeSearch = value;
+                  searchProvider.bikeSearchResult(context);
+                },
                 decoration: InputDecoration(
                     label: const Text('search'),
                     border: OutlineInputBorder(
@@ -84,370 +87,134 @@ class HomeBike extends StatelessWidget {
       Expanded(child: Consumer2<SearchProvider, BikeProvider>(
           // valueListenable: bikeListNotifier,
           builder: (BuildContext ctx, searchValue, bikeValue, child) {
-        if (searchValue.bSearchedList.isEmpty &&
-            searchProvider.bSearchController.text.isNotEmpty) {
-          return SizedBox(
-              child: Center(
-                  child: Lottie.asset(
-            'assets/Animation - 1707716192244.json',
-          )));
-        } else if (searchValue.bSearchedList.isEmpty) {
-          if (bikeValue.bikeList.isNotEmpty) {
-            final allBike = bikeValue.bikeList;
-            return ListView.separated(
-                itemCount: allBike.length,
-                itemBuilder: (ctx, index) {
-                  final dataa = allBike[index];
-                  final rentt = int.parse(dataa.bikeRent);
-                  bikeSum.add(rentt);
-                  double totalBike = bikeSum
-                      .reduce((value, element) => value + element)
-                      .toDouble();
-                  Chart.bikeValue = totalBike;
-
-                  return InkWell(
-                      onTap: () {
-                        Navigator.of(ctx)
-                            .push(MaterialPageRoute(builder: (ctx) {
-                          return AddUserData(
-                              carName: dataa.bikeName,
-                              carModel: dataa.bikeModel,
-                              carCeat: dataa.bikeCeatCapasity,
-                              carRent: dataa.bikeRent,
-                              image: bikes[index]);
-                        }));
-                      },
-                      child: Row(children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          width: 180,
-                          height: 115,
-                          // child: Image(image: AssetImage(dataa.image)),
-                          child: Image(image: AssetImage(bikes[index])),
-                        ),
-                        const SizedBox(width: 30),
-                        Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.speed_outlined,
-                                  size: 30,
-                                  color: Color.fromARGB(198, 7, 22, 153)),
-                              Text(dataa.bikeName,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900)),
-                              Text(dataa.bikeModel,
-                                  style: const TextStyle(
-                                      color: Color.fromARGB(198, 7, 22, 153),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w900)),
-                              Row(
-                                children: [
-                                  Text(
-                                    dataa.bikeRent,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w800,
-                                        color: Color.fromARGB(198, 7, 22, 153)),
-                                  ),
-                                  const Text('/per day',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              218, 117, 114, 114),
-                                          fontSize: 10)),
-                                ],
-                              ),
-                              const SizedBox(height: 5)
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Container(
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.people,
-                                    size: 30,
-                                    color: Color.fromARGB(198, 7, 22, 153),
-                                  ),
-                                  Text('People',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w900)),
-                                  Text(
-                                    '(1-2)',
-                                    style: TextStyle(
-                                        color: Color.fromARGB(186, 90, 87, 87),
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  )
-                                ]))
-                      ]));
-                },
-                separatorBuilder: (ctx, index) {
-                  return const Divider();
-                });
-          } else {
-            return const Center(
-              child: Text('No Data'),
-            );
-          }
-        } else {
-          return ListView.separated(
-              itemCount: searchValue.bSearchedList.length,
-              itemBuilder: (ctx, index) {
-                final dataa = searchValue.bSearchedList[index];
-                final rentt = int.parse(dataa.bikeRent);
-                bikeSum.add(rentt);
-                double totalBike = bikeSum
-                    .reduce((value, element) => value + element)
-                    .toDouble();
-                Chart.bikeValue = totalBike;
-
-                return InkWell(
-                    onTap: () {
-                      Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) {
-                        return AddUserData(
-                            carName: dataa.bikeName,
-                            carModel: dataa.bikeModel,
-                            carCeat: dataa.bikeCeatCapasity,
-                            carRent: dataa.bikeRent,
-                            image: bikes[index]);
-                      }));
-                    },
-                    child: Row(children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        width: 180,
-                        height: 115,
-                        // child: Image(image: AssetImage(dataa.image)),
-                        child: Image(image: AssetImage(bikes[index])),
-                      ),
-                      const SizedBox(width: 30),
-                      Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(Icons.speed_outlined,
-                                size: 30,
-                                color: Color.fromARGB(198, 7, 22, 153)),
-                            Text(dataa.bikeName,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900)),
-                            Text(dataa.bikeModel,
-                                style: const TextStyle(
-                                    color: Color.fromARGB(198, 7, 22, 153),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w900)),
-                            Row(
-                              children: [
-                                Text(
-                                  dataa.bikeRent,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(198, 7, 22, 153)),
-                                ),
-                                const Text('/per day',
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(218, 117, 114, 114),
-                                        fontSize: 10)),
-                              ],
-                            ),
-                            const SizedBox(height: 5)
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.people,
-                                  size: 30,
-                                  color: Color.fromARGB(198, 7, 22, 153),
-                                ),
-                                Text('People',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w900)),
-                                Text(
-                                  '(1-2)',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(186, 90, 87, 87),
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                )
-                              ]))
-                    ]));
-              },
-              separatorBuilder: (ctx, index) {
-                return const Divider();
-              });
-        }
+        return SizedBox(
+            child: searchValue.bikeSearch.isNotEmpty
+                ? bikeValue.bikeSearchList.isEmpty
+                    ? Center(
+                        child: Lottie.asset(
+                        'assets/Animation - 1707716192244.json',
+                      ))
+                    : bikeListbuild(bikeValue.bikeSearchList)
+                : bikeListbuild(bikeValue.bikeList));
       }))
     ]));
   }
 
-  // Widget bikeListbuild(List<AddBikeModel> bikeList) {
-  //   return bikeList.isEmpty
-  //       ? SizedBox(
-  //           child: Center(
-  //               child: Lottie.asset(
-  //           'assets/Animation - 1707716192244.json',
-  //         )))
-  //       : ListView.separated(
-  //           itemCount: .length,
-  //           itemBuilder: (ctx, index) {
-  //             final dataa = bikeList[index];
-  //             final rentt = int.parse(dataa.bikeRent);
-  //             bikeSum.add(rentt);
-  //             double totalBike = bikeSum
-  //                 .reduce((value, element) => value + element)
-  //                 .toDouble();
-  //             Chart.bikeValue = totalBike;
+  Widget bikeListbuild(List<BikesModel> bikeList) {
+    return bikeList.isEmpty
+        ? SizedBox(
+            child: Center(
+                child: Lottie.asset(
+            'assets/Animation - 1707716192244.json',
+          )))
+        : ListView.separated(
+            itemCount: bikeList.length,
+            itemBuilder: (ctx, index) {
+              final dataa = bikeList[index];
+              final rentt = int.parse(dataa.bikeRent);
+              bikeSum.add(rentt);
+              double totalBike = bikeSum
+                  .reduce((value, element) => value + element)
+                  .toDouble();
+              Chart.bikeValue = totalBike;
 
-  //             return InkWell(
-  //                 onTap: () {
-  //                   Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) {
-  //                     return AddUserData(
-  //                         carName: dataa.bikeName,
-  //                         carModel: dataa.bikeModel,
-  //                         carCeat: dataa.bikeCeatCapasity,
-  //                         carRent: dataa.bikeRent,
-  //                         image: bikes[index]);
-  //                   }));
-  //                 },
-  //                 child: Row(children: [
-  //                   const SizedBox(
-  //                     width: 10,
-  //                   ),
-  //                   SizedBox(
-  //                     width: 180,
-  //                     height: 115,
-  //                     // child: Image(image: AssetImage(dataa.image)),
-  //                     child: Image(image: AssetImage(bikes[index])),
-  //                   ),
-  //                   const SizedBox(width: 30),
-  //                   Container(
-  //                     width: 100,
-  //                     decoration: BoxDecoration(
-  //                         color: Colors.white,
-  //                         borderRadius: BorderRadius.circular(15)),
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         const Icon(Icons.speed_outlined,
-  //                             size: 30, color: Color.fromARGB(198, 7, 22, 153)),
-  //                         Text(dataa.bikeName,
-  //                             style: const TextStyle(
-  //                                 color: Colors.black,
-  //                                 fontSize: 18,
-  //                                 fontWeight: FontWeight.w900)),
-  //                         Text(dataa.bikeModel,
-  //                             style: const TextStyle(
-  //                                 color: Color.fromARGB(198, 7, 22, 153),
-  //                                 fontSize: 15,
-  //                                 fontWeight: FontWeight.w900)),
-  //                         Row(
-  //                           children: [
-  //                             Text(
-  //                               dataa.bikeRent,
-  //                               style: const TextStyle(
-  //                                   fontSize: 15,
-  //                                   fontWeight: FontWeight.w800,
-  //                                   color: Color.fromARGB(198, 7, 22, 153)),
-  //                             ),
-  //                             const Text('/per day',
-  //                                 style: TextStyle(
-  //                                     color: Color.fromARGB(218, 117, 114, 114),
-  //                                     fontSize: 10)),
-  //                           ],
-  //                         ),
-  //                         const SizedBox(height: 5)
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   const SizedBox(width: 20),
-  //                   Container(
-  //                       width: 100,
-  //                       decoration: BoxDecoration(
-  //                           color: Colors.white,
-  //                           borderRadius: BorderRadius.circular(15)),
-  //                       child: const Column(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Icon(
-  //                               Icons.people,
-  //                               size: 30,
-  //                               color: Color.fromARGB(198, 7, 22, 153),
-  //                             ),
-  //                             Text('People',
-  //                                 style: TextStyle(
-  //                                     color: Colors.black,
-  //                                     fontSize: 20,
-  //                                     fontWeight: FontWeight.w900)),
-  //                             Text(
-  //                               '(1-2)',
-  //                               style: TextStyle(
-  //                                   color: Color.fromARGB(186, 90, 87, 87),
-  //                                   fontSize: 17,
-  //                                   fontWeight: FontWeight.w900),
-  //                             ),
-  //                             SizedBox(
-  //                               height: 5,
-  //                             )
-  //                           ]))
-  //                 ]));
-  //           },
-  //           separatorBuilder: (ctx, index) {
-  //             return const Divider();
-  //           });
-  // }
+              return InkWell(
+                  onTap: () {
+                    Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) {
+                      return AddUserData(
+                          carName: dataa.bikeName,
+                          carModel: dataa.bikeModel,
+                          carCeat: dataa.bikeCeatCapasity,
+                          carRent: dataa.bikeRent,
+                          image: bikes[index]);
+                    }));
+                  },
+                  child: Row(children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 180,
+                      height: 115,
+                      // child: Image(image: AssetImage(dataa.image)),
+                      child: Image(image: AssetImage(bikes[index])),
+                    ),
+                    const SizedBox(width: 30),
+                    Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.speed_outlined,
+                              size: 30, color: Color.fromARGB(198, 7, 22, 153)),
+                          Text(dataa.bikeName,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900)),
+                          Text(dataa.bikeModel,
+                              style: const TextStyle(
+                                  color: Color.fromARGB(198, 7, 22, 153),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900)),
+                          Row(
+                            children: [
+                              Text(
+                                dataa.bikeRent,
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color.fromARGB(198, 7, 22, 153)),
+                              ),
+                              const Text('/per day',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(218, 117, 114, 114),
+                                      fontSize: 10)),
+                            ],
+                          ),
+                          const SizedBox(height: 5)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Container(
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.people,
+                                size: 30,
+                                color: Color.fromARGB(198, 7, 22, 153),
+                              ),
+                              Text('People',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900)),
+                              Text(
+                                '(1-2)',
+                                style: TextStyle(
+                                    color: Color.fromARGB(186, 90, 87, 87),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              )
+                            ]))
+                  ]));
+            },
+            separatorBuilder: (ctx, index) {
+              return const Divider();
+            });
+  }
 
   List<int> bikeSum = [];
 }
-//  if (bikeValue.bikeSearchList.isEmpty) {
-//                     return SizedBox(
-//                         child: Center(
-//                             child: Lottie.asset(
-//                       'assets/Animation - 1707716192244.json',
-//                     )));
-//                   } else {
-//                     return bikeListbuild(bikeValue.bSearchedList);
-//                   }

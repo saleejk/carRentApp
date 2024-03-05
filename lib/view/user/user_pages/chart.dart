@@ -1,5 +1,12 @@
+import 'package:call_taxi_app/service/bike_service.dart';
+import 'package:call_taxi_app/service/booking_service.dart';
+import 'package:call_taxi_app/service/car_service.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
+
+import '../../../controller/ui_providers/bike_provider.dart';
+import '../../../controller/ui_providers/car_provider.dart';
 
 class MyPieChart extends StatefulWidget {
   const MyPieChart({super.key});
@@ -9,33 +16,39 @@ class MyPieChart extends StatefulWidget {
 }
 
 class _MyPieChartState extends State<MyPieChart> {
-  late double totalcarvalues;
-  late double totalbikevalues;
-  late double totalvehiclevalues;
-  late Map<String, double> datas;
-  @override
-  void initState() {
-    super.initState();
-    addvalues();
-  }
-
-  void addvalues() {
-    setState(() {
-      totalcarvalues = Chart.carValue;
-      totalbikevalues = Chart.bikeValue;
-      // late Map<String, double> datas = {
-      //   'cars': totalcarvalues,
-      //   'bikes': totalbikevalues,
-      // };
-    });
-  }
-
-  List<Color> listColors = [
-    Colors.black,
-    const Color.fromARGB(198, 7, 22, 153),
-  ];
   @override
   Widget build(BuildContext context) {
+    BikeService bikeservice = BikeService();
+    BookingService bookService = BookingService();
+    CarService carService = CarService();
+    bikeservice.getBikeDetails();
+    bookService.getAllBookings();
+    carService.getCarDetails();
+    final pro = Provider.of<BikeProvider>(context);
+    final carpro = Provider.of<CarProvider>(context);
+    final dbBike = pro.bikeList;
+    final dbCar = carpro.carList;
+
+    double totalA = 0;
+    double totalB = 0;
+
+    for (var element in dbBike) {
+      totalA += int.parse(element.bikeRent);
+    }
+
+    for (var element in dbCar) {
+      totalB += int.parse(element.carRent);
+    }
+
+    late Map<String, double> datas = {
+      'cars $totalB': totalB,
+      'bikes $totalA': totalA,
+    };
+
+    List<Color> listColors = [
+      Colors.black,
+      const Color.fromARGB(198, 7, 22, 153),
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(198, 7, 22, 153),

@@ -1,6 +1,6 @@
 import 'package:call_taxi_app/controller/ui_providers/booking_provider.dart';
 import 'package:call_taxi_app/models/bookings_model/bookings_model.dart';
-import 'package:call_taxi_app/widgets/bottom_nav.dart';
+import 'package:call_taxi_app/view/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';

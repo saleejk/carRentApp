@@ -17,6 +17,5 @@ class UserPageProvider extends ChangeNotifier {
     final sharedPrefs = await SharedPreferences.getInstance();
     sharedPrefs.clear();
     notifyListeners();
-    // ignore: use_build_context_synchronously
   }
 }

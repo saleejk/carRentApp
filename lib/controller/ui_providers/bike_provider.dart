@@ -3,6 +3,7 @@ import 'package:call_taxi_app/service/bike_service.dart';
 import 'package:flutter/material.dart';
 
 class BikeProvider extends ChangeNotifier {
+  int activeIndex = 0;
   List<BikesModel> bikeList = [];
   List<BikesModel> bikeSearchList = [];
 
@@ -16,5 +17,10 @@ class BikeProvider extends ChangeNotifier {
   Future addBike(BikesModel value) async {
     await bikeservice.addBikes(value);
     getAllBike();
+  }
+
+  void bikeFilteredSearch(List<BikesModel> value) {
+    bikeSearchList = value;
+    notifyListeners();
   }
 }

@@ -1,35 +1,27 @@
-import 'package:call_taxi_app/widgets/bookings.dart';
+import 'dart:developer';
 
-import 'package:call_taxi_app/widgets/screen_home.dart';
-import 'package:call_taxi_app/view/user/user.dart';
+import 'package:call_taxi_app/controller/bottom_provider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int _currentIndex = 0;
-  final _screens = [const ScreenHome(), const Bookings(), const User()];
-
   @override
   Widget build(BuildContext context) {
+    log('dfghj');
+    final pro = Provider.of<BottomProvider>(context, listen: true);
     return Scaffold(
-        body: _screens[_currentIndex],
+        // body: Consumer<BottomProvider>(
+        //   builder: (context, value, child) => value.screens[value.currentIndex],
+        // ),
+        body: pro.screens[pro.currentIndex],
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
+            currentIndex: pro.currentIndex,
             showSelectedLabels: true,
             selectedItemColor: const Color.fromARGB(198, 7, 22, 153),
             unselectedItemColor: Colors.grey,
-            onTap: (value) {
-              setState(() {
-                _currentIndex = value;
-              });
-            },
+            onTap: pro.onTap,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
