@@ -1,14 +1,14 @@
-import 'dart:developer';
 import 'package:call_taxi_app/controller/ui_providers/bike_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
 import 'package:call_taxi_app/models/bikes_model/bikes_model.dart';
 import 'package:call_taxi_app/view/add_booking.dart';
-import 'package:call_taxi_app/view/user/user_pages/chart.dart';
+import 'package:call_taxi_app/view/subscreens/chart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class HomeBike extends StatelessWidget {
   HomeBike({super.key});
   final bikes = [
@@ -28,9 +28,8 @@ class HomeBike extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('dfghj');
     final searchProvider = Provider.of<SearchProvider>(context, listen: false);
-    Provider.of<BikeProvider>(context, listen: false).getAllBike();
+    Provider.of<BikeController>(context, listen: false).getAllBike();
 
     return Scaffold(
         body: Column(children: [
@@ -74,7 +73,6 @@ class HomeBike extends StatelessWidget {
               width: double.infinity,
               height: 40,
               child: TextFormField(
-                // controller: searchProvider.bSearchController,
                 onChanged: (value) {
                   searchProvider.bikeSearch = value;
                   searchProvider.bikeSearchResult(context);
@@ -84,8 +82,7 @@ class HomeBike extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30))),
               ))),
-      Expanded(child: Consumer2<SearchProvider, BikeProvider>(
-          // valueListenable: bikeListNotifier,
+      Expanded(child: Consumer2<SearchProvider, BikeController>(
           builder: (BuildContext ctx, searchValue, bikeValue, child) {
         return SizedBox(
             child: searchValue.bikeSearch.isNotEmpty
@@ -136,8 +133,9 @@ class HomeBike extends StatelessWidget {
                     SizedBox(
                       width: 180,
                       height: 115,
-                      // child: Image(image: AssetImage(dataa.image)),
-                      child: Image(image: AssetImage(bikes[index])),
+                      child:
+                          Image(image: AssetImage(dataa.image ?? bikes[index])),
+                      // child: Image(image: AssetImage(bikes[index])),
                     ),
                     const SizedBox(width: 30),
                     Container(

@@ -5,17 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controller/ui_providers/bike_provider.dart';
-import '../../../controller/ui_providers/car_provider.dart';
+import '../../controller/ui_providers/bike_provider.dart';
+import '../../controller/ui_providers/car_provider.dart';
 
-class MyPieChart extends StatefulWidget {
+class MyPieChart extends StatelessWidget {
   const MyPieChart({super.key});
 
-  @override
-  State<MyPieChart> createState() => _MyPieChartState();
-}
-
-class _MyPieChartState extends State<MyPieChart> {
   @override
   Widget build(BuildContext context) {
     BikeService bikeservice = BikeService();
@@ -24,9 +19,9 @@ class _MyPieChartState extends State<MyPieChart> {
     bikeservice.getBikeDetails();
     bookService.getAllBookings();
     carService.getCarDetails();
-    final pro = Provider.of<BikeProvider>(context);
-    final carpro = Provider.of<CarProvider>(context);
-    final dbBike = pro.bikeList;
+    final bikePro = Provider.of<BikeController>(context);
+    final carpro = Provider.of<CarController>(context);
+    final dbBike = bikePro.bikeList;
     final dbCar = carpro.carList;
 
     double totalA = 0;
@@ -41,8 +36,8 @@ class _MyPieChartState extends State<MyPieChart> {
     }
 
     late Map<String, double> datas = {
-      'cars $totalB': totalB,
-      'bikes $totalA': totalA,
+      'cars \$$totalB': totalB,
+      'bikes \$$totalA': totalA,
     };
 
     List<Color> listColors = [

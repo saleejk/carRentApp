@@ -183,7 +183,7 @@ class _EditState extends State<Edit> {
 
   void updateChanges() async {
     final bookingProvider =
-        Provider.of<BookingProvider>(context, listen: false);
+        Provider.of<BookingController>(context, listen: false);
     final name_ = _nameController.text;
     final sDate_ = _startingDateController.text;
     final eDate_ = _endingDateController.text;

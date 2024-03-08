@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class EditProvider extends ChangeNotifier {
+class EditController extends ChangeNotifier {
   final nameController = TextEditingController();
   final startingDateController = TextEditingController();
   final endingDateController = TextEditingController();

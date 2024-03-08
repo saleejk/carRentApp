@@ -2,7 +2,7 @@ import 'package:call_taxi_app/models/bookings_model/bookings_model.dart';
 import 'package:call_taxi_app/service/booking_service.dart';
 import 'package:flutter/material.dart';
 
-class BookingProvider extends ChangeNotifier {
+class BookingController extends ChangeNotifier {
   List<BookingsModel> bookingList = [];
   BookingService bookingservice = BookingService();
 

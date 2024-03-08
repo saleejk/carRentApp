@@ -1,4 +1,4 @@
-import 'package:call_taxi_app/controller/logIn_controller.dart';
+import 'package:call_taxi_app/controller/login_controller.dart';
 import 'package:call_taxi_app/view/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,11 +96,9 @@ class LogIn extends StatelessWidget {
                                     MaterialStatePropertyAll(Colors.white)),
                             onPressed: () {
                               if (formKeyy.currentState!.validate()) {
-                                providerr.checklogin();
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(builder: (ctx) {
-                                  return const Home();
-                                }));
+                                providerr.checklogin(context);
+                              } else {
+                                return;
                               }
                             },
                             child: const Text('Submit'))

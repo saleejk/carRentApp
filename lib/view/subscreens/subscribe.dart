@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Subscribe extends StatelessWidget {
-  Subscribe({super.key});
+  const Subscribe({super.key});
 
   @override
   Widget build(BuildContext context) {

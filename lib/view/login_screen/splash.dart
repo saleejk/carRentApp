@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> check() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    final userLoggedIn = sharedPrefs.getBool(SAVE_KEY_NAME);
+    final userLoggedIn = sharedPrefs.getBool(saveKeyName);
     if (userLoggedIn == null || userLoggedIn == false) {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) {

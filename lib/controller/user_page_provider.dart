@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserPageProvider extends ChangeNotifier {
-  Future<void> dataClear() async {
-    await Hive.box<CarsModel>('car_db').clear();
-    await Hive.box<BookingsModel>('booking_db').clear();
-    await Hive.box<BikesModel>('addBike_db').clear();
+class UserPageController extends ChangeNotifier {
+  dataClear() {
+    Hive.box<CarsModel>('car_db').clear();
+    Hive.box<BookingsModel>('booking_db').clear();
+    Hive.box<BikesModel>('addBike_db').clear();
     notifyListeners();
   }
 

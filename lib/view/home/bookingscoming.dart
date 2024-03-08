@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class BookingsComing extends StatelessWidget {
   BookingsComing({super.key});
   Color mainColor = const Color.fromARGB(198, 7, 22, 153);
@@ -11,12 +12,12 @@ class BookingsComing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bookingProvider =
-        Provider.of<BookingProvider>(context, listen: false);
+        Provider.of<BookingController>(context, listen: false);
     bookingProvider.getAllBooking();
     return Scaffold(
         body: Column(children: [
-      Expanded(child:
-          Consumer<BookingProvider>(builder: (BuildContext ctx, value, child) {
+      Expanded(child: Consumer<BookingController>(
+          builder: (BuildContext ctx, value, child) {
         return value.bookingList.isNotEmpty
             ? Expanded(
                 child: ListView.separated(

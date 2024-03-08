@@ -2,12 +2,13 @@ import 'package:call_taxi_app/controller/ui_providers/car_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
 import 'package:call_taxi_app/models/cars_model/cars_model.dart';
 import 'package:call_taxi_app/view/add_booking.dart';
-import 'package:call_taxi_app/view/user/user_pages/chart.dart';
+import 'package:call_taxi_app/view/subscreens/chart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class HomeCar extends StatelessWidget {
   HomeCar({
     super.key,
@@ -34,7 +35,7 @@ class HomeCar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchProvider = Provider.of<SearchProvider>(context, listen: false);
-    Provider.of<CarProvider>(context, listen: false).getAllCar();
+    Provider.of<CarController>(context, listen: false).getAllCar();
 
     return Scaffold(
         body: Column(children: [
@@ -76,17 +77,19 @@ class HomeCar extends StatelessWidget {
           child: SizedBox(
               width: double.infinity,
               height: 40,
-              child: TextFormField(
-                onChanged: (value) {
-                  searchProvider.carSearch = value;
-                  searchProvider.carSearchResult(context);
-                },
-                decoration: InputDecoration(
-                    label: const Text('search'),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30))),
-              ))),
-      Expanded(child: Consumer2<SearchProvider, CarProvider>(
+              child: Consumer<SearchProvider>(builder: (context, pro, child) {
+                return TextFormField(
+                  onChanged: (value) {
+                    searchProvider.carSearch = value;
+                    searchProvider.carSearchResult(context);
+                  },
+                  decoration: InputDecoration(
+                      label: const Text('search'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30))),
+                );
+              }))),
+      Expanded(child: Consumer2<SearchProvider, CarController>(
           builder: (BuildContext ctx, searchValue, carValue, child) {
         return SizedBox(
             child: searchProvider.carSearch.isNotEmpty
@@ -97,10 +100,6 @@ class HomeCar extends StatelessWidget {
                       ))
                     : carListbuild(carValue.carSearchList)
                 : carListbuild(carValue.carList));
-        // final carlist = searchValue.cSearchedList.isNotEmpty
-        //     ? searchValue.cSearchedList
-        //     : carValue.carList;
-        // return carListbuild(carlist, searchValue);
       }))
     ]));
   }
@@ -139,8 +138,8 @@ class HomeCar extends StatelessWidget {
                         width: 200,
                         height: 125,
                         child: Image(
-                          // image: AssetImage(data.image ?? newCarList[index]),
-                          image: AssetImage(cars[index]),
+                          image: AssetImage(data.image ?? cars[index]),
+                          // image: AssetImage(cars[index]),
                         )),
                     const SizedBox(width: 30),
                     Container(
@@ -218,3 +217,12 @@ class HomeCar extends StatelessWidget {
 
   List<int> carSum = [];
 }
+// SizedBox(
+//             child: searchProvider.carSearch.isNotEmpty
+//                 ? carValue.carSearchList.isEmpty
+//                     ? Center(
+//                         child: Lottie.asset(
+//                         'assets/Animation - 1707716192244.json',
+//                       ))
+//                     : carListbuild(carValue.carSearchList)
+//                 : carListbuild(carValue.carList));

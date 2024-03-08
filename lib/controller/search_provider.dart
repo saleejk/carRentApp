@@ -8,8 +8,9 @@ class SearchProvider extends ChangeNotifier {
   TextEditingController bSearchController = TextEditingController();
   String carSearch = '';
   String bikeSearch = '';
+
   void carSearchResult(BuildContext context) {
-    final carProvider = Provider.of<CarProvider>(context, listen: false);
+    final carProvider = Provider.of<CarController>(context, listen: false);
     final filteredList = carProvider.carList
         .where((element) =>
             element.carName.toLowerCase().contains(carSearch.toLowerCase()))
@@ -18,7 +19,7 @@ class SearchProvider extends ChangeNotifier {
   }
 
   void bikeSearchResult(BuildContext context) {
-    final bikeProvider = Provider.of<BikeProvider>(context, listen: false);
+    final bikeProvider = Provider.of<BikeController>(context, listen: false);
     final filteredList = bikeProvider.bikeList
         .where((element) =>
             element.bikeName.toLowerCase().contains(bikeSearch.toLowerCase()))

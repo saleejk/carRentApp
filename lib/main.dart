@@ -1,3 +1,4 @@
+import 'package:call_taxi_app/controller/add_booking_provider.dart';
 import 'package:call_taxi_app/controller/bottom_provider.dart';
 import 'package:call_taxi_app/controller/edit_provider.dart';
 import 'package:call_taxi_app/controller/ui_providers/bike_provider.dart';
@@ -5,7 +6,7 @@ import 'package:call_taxi_app/controller/vehicle_provider.dart';
 import 'package:call_taxi_app/controller/search_provider.dart';
 import 'package:call_taxi_app/controller/ui_providers/booking_provider.dart';
 import 'package:call_taxi_app/controller/ui_providers/car_provider.dart';
-import 'package:call_taxi_app/controller/logIn_controller.dart';
+import 'package:call_taxi_app/controller/login_controller.dart';
 import 'package:call_taxi_app/controller/user_page_provider.dart';
 import 'package:call_taxi_app/models/bikes_model/bikes_model.dart';
 import 'package:call_taxi_app/models/bookings_model/bookings_model.dart';
@@ -15,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-final SAVE_KEY_NAME = 'userLogedIn';
+const saveKeyName = 'userLogedIn';
 var username = '1234';
 
 Future<void> main() async {
@@ -30,6 +31,9 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(BikesModelAdapter().typeId)) {
     Hive.registerAdapter(BikesModelAdapter());
   }
+  await Hive.openBox<CarsModel>('car_db');
+  await Hive.openBox<BikesModel>('addBike_db');
+  await Hive.openBox<BookingsModel>('booking_db');
   runApp(const MyApp());
 }
 
@@ -41,21 +45,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => SearchProvider(),
-        ),
-        ChangeNotifierProvider(create: (context) => VehicleProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
+        ChangeNotifierProvider(create: (context) => VehicleController()),
         ChangeNotifierProvider(create: (context) => LoginController()),
-        ChangeNotifierProvider(create: (context) => UserPageProvider()),
-        ChangeNotifierProvider(create: (context) => CarProvider()),
-        ChangeNotifierProvider(create: (context) => BikeProvider()),
-        ChangeNotifierProvider(create: (context) => BookingProvider()),
-        ChangeNotifierProvider(
-          create: (context) => EditProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => BottomProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => UserPageController()),
+        ChangeNotifierProvider(create: (context) => CarController()),
+        ChangeNotifierProvider(create: (context) => BikeController()),
+        ChangeNotifierProvider(create: (context) => BookingController()),
+        ChangeNotifierProvider(create: (context) => EditController()),
+        ChangeNotifierProvider(create: (context) => BottomController()),
+        ChangeNotifierProvider(create: (context) => AddBookingController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

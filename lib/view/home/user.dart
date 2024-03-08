@@ -1,15 +1,20 @@
 import 'dart:io';
 import 'package:call_taxi_app/controller/user_page_provider.dart';
 import 'package:call_taxi_app/main.dart';
+import 'package:call_taxi_app/models/bikes_model/bikes_model.dart';
+import 'package:call_taxi_app/models/bookings_model/bookings_model.dart';
+import 'package:call_taxi_app/models/cars_model/cars_model.dart';
 import 'package:call_taxi_app/view/login_screen/login_page.dart';
-import 'package:call_taxi_app/view/user/user_pages/chart.dart';
-import 'package:call_taxi_app/view/user/user_pages/custommer_support.dart';
-import 'package:call_taxi_app/view/user/user_pages/subscreen/subscribe.dart';
+import 'package:call_taxi_app/view/subscreens/chart.dart';
+import 'package:call_taxi_app/view/subscreens/custommer_support.dart';
+import 'package:call_taxi_app/view/subscreens/subscribe.dart';
 import 'package:call_taxi_app/view/add_vehicle.dart';
-import 'package:call_taxi_app/view/user/user_pages/subscreen/termsAndConditions.dart';
+import 'package:call_taxi_app/view/subscreens/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class User extends StatelessWidget {
   User({super.key});
 
@@ -17,7 +22,7 @@ class User extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserPageProvider>(builder: (context, provider, child) {
+    return Consumer<UserPageController>(builder: (context, provider, child) {
       return Scaffold(
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -47,7 +52,7 @@ class User extends StatelessWidget {
                             children: [
                               userListt("Add Vehicle", Icons.add, () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => AddCar(),
+                                  builder: (ctx) => const AddCar(),
                                 ));
                               }),
                               userListt('Chart', Icons.list, () {
@@ -70,10 +75,14 @@ class User extends StatelessWidget {
                               userListt('Privacy Policy',
                                   Icons.private_connectivity_outlined, () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => Subscribe()));
+                                    builder: (ctx) => const Subscribe()));
                               }),
                               userListt('Reset data', Icons.restore, () {
-                                provider.dataClear();
+                                Hive.box<CarsModel>('car_db').clear();
+                                Hive.box<BookingsModel>('booking_db').clear();
+                                Hive.box<BikesModel>('addBike_db').clear();
+
+                                // provider.dataClear();
 
                                 showDialog(
                                     context: context,
